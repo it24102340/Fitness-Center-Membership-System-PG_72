@@ -17,36 +17,66 @@ public class UserService {
     private final String USER_FILE = "src/main/resources/data/users.txt";
 
     // Create: Register a new user
-    public void registerUser(User user) throws IOException {
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt())); // Encrypt password
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE, true))) {
-            writer.write(user.toString());
-            writer.newLine();
+    public User registerUser(String username, String password, String email, String role) {
+        try {
+            // Check if username already exists
+            if (findUserByUsername(username) != null) {
+                return null;
+            }
+
+            // Create new user with hashed password
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+            User user = new User(username, hashedPassword, email, role);
+            
+            // Save user to file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE, true))) {
+                writer.write(String.format("%s,%s,%s,%s", username, hashedPassword, email, role));
+                writer.newLine();
+            }
+            
+            return user;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
     // Read: Find user by username
-    public User findUserByUsername(String username) throws IOException {
-        List<User> users = loadUsers();
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
+    public User findUserByUsername(String username) {
+        try {
+            List<User> users = loadUsers();
+            for (User user : users) {
+                if (user.getUsername().equals(username)) {
+                    return user;
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    // Validate login
-    public boolean validateLogin(String username, String password) throws IOException {
-        User user = findUserByUsername(username);
-        return user != null && BCrypt.checkpw(password, user.getPassword());
+    // Validate login and return user if valid
+    public User validateLogin(String username, String password) {
+        try {
+            User user = findUserByUsername(username);
+            if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+                return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Load all users from file
     private List<User> loadUsers() throws IOException {
         List<User> users = new ArrayList<>();
         File file = new File(USER_FILE);
-        if (!file.exists()) file.createNewFile();
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {

@@ -3,170 +3,147 @@
 <head>
     <title>Member Dashboard - Fitness Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         .gradient-background {
-            background: linear-gradient(120deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
         }
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-20px); }
             100% { transform: translateY(0px); }
         }
         .float-animation {
             animation: float 3s ease-in-out infinite;
         }
-        .gym-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        .nav-link {
+            position: relative;
         }
-        .card-hover {
-            transition: all 0.3s ease;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .journey-button {
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-            transition: all 0.3s ease;
-        }
-        .journey-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen gym-pattern">
-    <!-- Navigation -->
-    <nav class="bg-black bg-opacity-90 shadow-lg">
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+    <!-- Navigation Dashboard -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-white">FITNESS JOURNEY</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-300">Welcome, <%= request.getAttribute("username") %></span>
-                    <a href="${pageContext.request.contextPath}/logout" 
-                       class="journey-button text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-colors duration-300">
-                        Logout
+                    <a href="${pageContext.request.contextPath}/" class="flex items-center space-x-2">
+                        <span class="text-2xl">💪</span>
+                        <span class="font-bold text-xl text-gray-800">Fitness Center</span>
                     </a>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <a href="${pageContext.request.contextPath}/" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Home</a>
+                    <a href="${pageContext.request.contextPath}/courses" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Courses</a>
+                    <span class="text-gray-600">Welcome, <%= session.getAttribute("username") %></span>
+                    <a href="${pageContext.request.contextPath}/logout" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-300">Logout</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-12 mt-16">
+        <!-- Dashboard Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-bold mb-6 text-gray-800">
+                Member Dashboard
+            </h1>
+            <p class="text-xl text-gray-600 mb-8">
+                Track Your Fitness Journey
+            </p>
+        </div>
+
         <!-- Quick Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h3 class="text-xl font-semibold text-white mb-2">Workouts This Week</h3>
-                <p class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-FF6B6B to-4ECDC4">5</p>
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">🏃‍♂️</div>
+                <h3 class="text-xl font-semibold mb-2">Workouts This Week</h3>
+                <p class="text-3xl font-bold text-blue-600">5</p>
             </div>
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h3 class="text-xl font-semibold text-white mb-2">Next Session</h3>
-                <p class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-FF6B6B to-4ECDC4">2h</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">📅</div>
+                <h3 class="text-xl font-semibold mb-2">Next Session</h3>
+                <p class="text-xl font-bold text-green-600">Today 5 PM</p>
             </div>
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h3 class="text-xl font-semibold text-white mb-2">Points Earned</h3>
-                <p class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-FF6B6B to-4ECDC4">250</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">⭐</div>
+                <h3 class="text-xl font-semibold mb-2">Points Earned</h3>
+                <p class="text-3xl font-bold text-purple-600">750</p>
             </div>
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h3 class="text-xl font-semibold text-white mb-2">Days Streak</h3>
-                <p class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-FF6B6B to-4ECDC4">7</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">🔥</div>
+                <h3 class="text-xl font-semibold mb-2">Days Streak</h3>
+                <p class="text-3xl font-bold text-orange-600">15</p>
             </div>
         </div>
 
-        <!-- Main Sections -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Membership Plans & Registration -->
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-                    <span class="text-3xl mr-2">💪</span>
-                    My Membership
-                </h2>
-                <div class="space-y-4">
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Current Plan</h3>
-                        <p class="text-gray-400">Premium Membership - Valid until Dec 31, 2024</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Upgrade Options</h3>
-                        <p class="text-gray-400">View available membership upgrades</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Payment History</h3>
-                        <p class="text-gray-400">View your payment records</p>
-                    </a>
-                </div>
+        <!-- Member Features -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- My Membership -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-blue-500 text-4xl mb-4">🎫</div>
+                <h3 class="text-xl font-semibold mb-4">My Membership</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">➤ View Plan Details</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Payment History</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Upgrade Plan</a></li>
+                </ul>
             </div>
 
-            <!-- Workout Programs -->
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-                    <span class="text-3xl mr-2">🏋️‍♂️</span>
-                    My Workouts
-                </h2>
-                <div class="space-y-4">
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Current Program</h3>
-                        <p class="text-gray-400">Strength Training - Week 3</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Class Schedule</h3>
-                        <p class="text-gray-400">View upcoming classes and sessions</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Progress Tracking</h3>
-                        <p class="text-gray-400">Monitor your fitness journey</p>
-                    </a>
-                </div>
+            <!-- My Workouts -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-green-500 text-4xl mb-4">🏋️‍♂️</div>
+                <h3 class="text-xl font-semibold mb-4">My Workouts</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">➤ Current Program</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Exercise Library</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Workout History</a></li>
+                </ul>
             </div>
 
-            <!-- Scheduling & Attendance -->
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-                    <span class="text-3xl mr-2">📅</span>
-                    Schedule & Attendance
-                </h2>
-                <div class="space-y-4">
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Book Session</h3>
-                        <p class="text-gray-400">Schedule your next workout</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Attendance History</h3>
-                        <p class="text-gray-400">View your workout history</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">My Calendar</h3>
-                        <p class="text-gray-400">Manage your workout schedule</p>
-                    </a>
-                </div>
+            <!-- Schedule -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-purple-500 text-4xl mb-4">📅</div>
+                <h3 class="text-xl font-semibold mb-4">Schedule & Attendance</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">➤ Book Classes</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ My Schedule</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Attendance History</a></li>
+                </ul>
             </div>
 
-            <!-- Personal Progress -->
-            <div class="bg-black bg-opacity-50 rounded-lg shadow-xl p-6 card-hover border border-gray-700">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-                    <span class="text-3xl mr-2">📊</span>
-                    My Progress
-                </h2>
-                <div class="space-y-4">
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Fitness Goals</h3>
-                        <p class="text-gray-400">Track your fitness objectives</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Achievements</h3>
-                        <p class="text-gray-400">View your fitness milestones</p>
-                    </a>
-                    <a href="#" class="block p-4 bg-gray-900 bg-opacity-50 rounded-lg hover:bg-gray-800 transition-all duration-300 border border-gray-700">
-                        <h3 class="font-semibold text-white">Performance Stats</h3>
-                        <p class="text-gray-400">Monitor your workout metrics</p>
-                    </a>
-                </div>
+            <!-- Progress -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-orange-500 text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-semibold mb-4">My Progress</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">➤ Track Goals</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Body Metrics</a></li>
+                    <li><a href="#" class="hover:text-blue-600">➤ Progress Photos</a></li>
+                </ul>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-white bg-opacity-90 shadow-lg mt-16">
+        <div class="container mx-auto px-4 py-6">
+            <div class="text-center text-gray-600">
+                <p>© 2024 Fitness Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html> 

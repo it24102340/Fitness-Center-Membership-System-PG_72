@@ -6,12 +6,24 @@
 
     <display-name>Fitness Center Membership System</display-name>
 
-    <!-- Welcome page -->
+    <!-- Servlet Definitions -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.fitnesscenter.membershipsystem.servlet.AuthServlet</servlet-class>
+    </servlet>
+
+    <!-- Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Welcome File List -->
     <welcome-file-list>
-        <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Session timeout (30 minutes) -->
+    <!-- Session Configuration -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -19,10 +31,29 @@
     <!-- Error Pages -->
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/views/error.jsp</location>
+        <location>/WEB-INF/views/error/404.jsp</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/WEB-INF/views/error.jsp</location>
+        <location>/WEB-INF/views/error/500.jsp</location>
     </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/views/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.RuntimeException</exception-type>
+        <location>/WEB-INF/views/error/error.jsp</location>
+    </error-page>
+
+    <!-- MIME Type Mappings -->
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>application/javascript</mime-type>
+    </mime-mapping>
+
 </web-app>
