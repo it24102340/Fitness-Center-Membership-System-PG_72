@@ -33,6 +33,49 @@
         .nav-link:hover::after {
             width: 100%;
         }
+        .login-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .login-btn:hover::after {
+            left: 100%;
+        }
+        .admin-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+        }
+        .trainer-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        .member-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        }
+        .admin-login:hover {
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+        }
+        
+        .trainer-login:hover {
+            box-shadow: 0 0 15px rgba(22, 163, 74, 0.5);
+        }
+        
+        .member-signup:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
@@ -46,15 +89,18 @@
                         <span class="font-bold text-xl text-gray-800">Fitness Center</span>
                     </a>
                 </div>
-                <div class="flex items-center space-x-8">
-                    <a href="${pageContext.request.contextPath}/" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Home</a>
-                    <a href="#features" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Features</a>
-                    <a href="#programs" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Programs</a>
+                <div class="flex items-center space-x-6">
+                    <a href="${pageContext.request.contextPath}/" 
+                       class="nav-link text-gray-600 hover:text-blue-600 transition-all duration-300">Home</a>
+                    <a href="#features" 
+                       class="nav-link text-gray-600 hover:text-blue-600 transition-all duration-300">Features</a>
+                    <a href="#programs" 
+                       class="nav-link text-gray-600 hover:text-blue-600 transition-all duration-300">Programs</a>
                     
                     <% if (session != null && session.getAttribute("username") != null) { %>
                         <!-- Logged in navigation -->
-                        <a href="${pageContext.request.contextPath}/courses" class="nav-link text-gray-600 hover:text-blue-600 transition-colors duration-300">Courses</a>
-                        
+                        <a href="${pageContext.request.contextPath}/courses" 
+                           class="nav-link text-gray-600 hover:text-blue-600 transition-all duration-300">Courses</a>
                         <% String role = (String) session.getAttribute("role");
                            if (role != null) {
                                switch(role) {
@@ -69,13 +115,22 @@
                                        <% break;
                                }
                            } %>
-                        
                         <span class="text-gray-600">Welcome, <%= session.getAttribute("username") %></span>
-                        <a href="${pageContext.request.contextPath}/logout" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-300">Logout</a>
+                        <a href="${pageContext.request.contextPath}/logout" 
+                           class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">Logout</a>
                     <% } else { %>
                         <!-- Not logged in navigation -->
-                        <a href="${pageContext.request.contextPath}/auth/signup" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-300">Sign Up</a>
-                        <a href="${pageContext.request.contextPath}/auth/login" class="text-blue-600 px-4 py-2 rounded-full border-2 border-blue-600 hover:bg-blue-50 transition-colors duration-300">Login</a>
+                        <div class="flex items-center space-x-4">
+                            <a href="admin-login.jsp" class="login-btn admin-btn text-white px-6 py-2 rounded-lg">
+                                👑 Admin Login
+                            </a>
+                            <a href="trainer-login.jsp" class="login-btn trainer-btn text-white px-6 py-2 rounded-lg">
+                                🏋️ Trainer Login
+                            </a>
+                            <a href="signup.jsp" class="login-btn member-btn text-white px-6 py-2 rounded-lg">
+                                💪 Member Signup
+                            </a>
+                        </div>
                     <% } %>
                 </div>
             </div>
