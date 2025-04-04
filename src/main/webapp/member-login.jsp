@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Member Signup - ZACSON</title>
+    <title>Member Login - ZACSON</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -36,13 +36,13 @@
             background: rgba(0, 0, 0, 0.7);
         }
 
-        .signup-container {
+        .login-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 10px;
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -72,7 +72,7 @@
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
         }
 
-        .signup-button {
+        .login-button {
             width: 100%;
             padding: 0.75rem;
             background: #ff0000;
@@ -84,7 +84,7 @@
             transition: all 0.3s ease;
         }
 
-        .signup-button:hover {
+        .login-button:hover {
             background: #cc0000;
             transform: translateY(-2px);
         }
@@ -118,18 +118,19 @@
             }
         }
 
-        .login-link {
+        .signup-link {
             text-align: center;
             margin-top: 1rem;
+            color: #ffffff;
         }
 
-        .login-link a {
+        .signup-link a {
             color: #ff0000;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        .login-link a:hover {
+        .signup-link a:hover {
             color: #cc0000;
             text-decoration: underline;
         }
@@ -212,75 +213,67 @@
     </nav>
 
     <div class="main-container">
-        <div class="signup-container">
-            <h2 class="form-title">Member Signup</h2>
-            <div id="signupError" class="error-message">Please fill in all required fields.</div>
-            <form id="signupForm" onsubmit="return handleSignup(event)">
-                <input type="text" id="fullname" name="fullname" placeholder="Full Name" class="form-input" required>
-                <input type="email" id="email" name="email" placeholder="Email" class="form-input" required>
+        <div class="login-container">
+            <h2 class="form-title">Member Login</h2>
+            <div id="loginError" class="error-message">Invalid username or password. Please try again.</div>
+            <form id="loginForm" onsubmit="return handleLogin(event)">
                 <input type="text" id="username" name="username" placeholder="Username" class="form-input" required>
                 <input type="password" id="password" name="password" placeholder="Password" class="form-input" required>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" class="form-input" required>
-                <button type="submit" class="signup-button">Sign Up</button>
+                <button type="submit" class="login-button">Login</button>
             </form>
-            <div class="login-link">
-                Already a member? <a href="member-login.jsp">Login here</a>
+            <div class="signup-link">
+                Not a member? <a href="signup.jsp">Sign up now</a>
             </div>
         </div>
     </div>
 
     <script>
-        function handleSignup(event) {
+        function handleLogin(event) {
             event.preventDefault();
-            const fullname = document.getElementById('fullname').value;
-            const email = document.getElementById('email').value;
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorDiv = document.getElementById('signupError');
+            const errorDiv = document.getElementById('loginError');
 
-            // Basic validation
-            if (!fullname || !email || !username || !password || !confirmPassword) {
-                errorDiv.textContent = "Please fill in all required fields.";
-                errorDiv.classList.add('show');
-                return false;
-            }
-
-            if (password !== confirmPassword) {
-                errorDiv.textContent = "Passwords do not match.";
-                errorDiv.classList.add('show');
-                return false;
-            }
-
-            // Get existing users or initialize empty array
+            // Get registered users from local storage
             const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-
-            // Check if username already exists
-            if (registeredUsers.some(user => user.username === username)) {
-                errorDiv.textContent = "Username already exists. Please choose another.";
-                errorDiv.classList.add('show');
-                return false;
-            }
-
-            // Add new user
-            registeredUsers.push({
-                fullname,
-                email,
-                username,
-                password,
-                dateRegistered: new Date().toISOString()
-            });
-
-            // Save updated users list
-            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
             
-            // Save last signup username for auto-fill in login
-            localStorage.setItem('lastSignupUsername', username);
+            // Check if user exists and password matches
+            const user = registeredUsers.find(u => u.username === username && u.password === password);
 
-            // Redirect to login page
-            window.location.href = 'member-login.jsp?signup=success';
+            if (user) {
+                // Successful login
+                localStorage.setItem('memberLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify({
+                    username: user.username,
+                    fullname: user.fullname,
+                    email: user.email,
+                    lastLogin: new Date().toISOString()
+                }));
+                window.location.href = 'index.jsp';
+            } else {
+                // Failed login
+                errorDiv.textContent = "Invalid username or password. Please try again.";
+                errorDiv.classList.add('show');
+            }
             return false;
         }
+
+        // Check if coming from successful signup
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('signup') === 'success') {
+            const username = localStorage.getItem('lastSignupUsername');
+            if (username) {
+                document.getElementById('username').value = username;
+            }
+        }
+
+        // Check if user was previously logged in
+        window.addEventListener('load', function() {
+            const lastUsername = JSON.parse(localStorage.getItem('currentUser'))?.username;
+            if (lastUsername) {
+                document.getElementById('username').value = lastUsername;
+            }
+        });
     </script>
 </body>
 </html> 

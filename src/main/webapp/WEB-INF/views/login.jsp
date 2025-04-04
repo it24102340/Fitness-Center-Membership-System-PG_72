@@ -82,8 +82,8 @@
             <!-- Sign Up Link -->
             <div class="text-center mt-4">
                 <p class="text-sm text-gray-600">
-                    New to our fitness family? 
-                    <a href="${pageContext.request.contextPath}/auth/signup" class="font-medium text-blue-600 hover:text-blue-500">
+                    New to our fitness family?
+                    <a href="signup.jsp" class="login-btn member-btn text-white px-6 py-2 rounded-lg">
                         Sign up here
                     </a>
                 </p>
