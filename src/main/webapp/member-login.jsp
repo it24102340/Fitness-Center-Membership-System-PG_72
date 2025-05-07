@@ -198,82 +198,78 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="nav-container">
-        <div class="nav-content">
-            <div class="flex items-center gap-8">
-                <a href="index.jsp" class="nav-logo">
-                    <span>💪</span> ZACSON
-                </a>
-                <a href="index.jsp" class="nav-link">
-                    <span class="back-arrow">←</span> BACK TO HOME
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="main-container">
-        <div class="login-container">
-            <h2 class="form-title">Member Login</h2>
-            <div id="loginError" class="error-message">Invalid username or password. Please try again.</div>
-            <form id="loginForm" onsubmit="return handleLogin(event)">
-                <input type="text" id="username" name="username" placeholder="Username" class="form-input" required>
-                <input type="password" id="password" name="password" placeholder="Password" class="form-input" required>
-                <button type="submit" class="login-button">Login</button>
-            </form>
-            <div class="signup-link">
-                Not a member? <a href="signup.jsp">Sign up now</a>
-            </div>
+<!-- Navigation Bar -->
+<nav class="nav-container">
+    <div class="nav-content">
+        <div class="flex items-center gap-8">
+            <a href="index.jsp" class="nav-logo">
+                <span>💪</span> ZACSON
+            </a>
+            <a href="index.jsp" class="nav-link">
+                <span class="back-arrow">←</span> BACK TO HOME
+            </a>
         </div>
     </div>
+</nav>
 
-    <script>
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('loginError');
+<div class="main-container">
+    <div class="login-container">
+        <h2 class="form-title">Member Login</h2>
+        <div id="loginError" class="error-message">Invalid username or password. Please try again.</div>
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <input type="text" id="username" name="username" placeholder="Username" class="form-input" required>
+            <input type="password" id="password" name="password" placeholder="Password" class="form-input" required>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <div class="signup-link">
+            Not a member? <a href="signup.jsp">Sign up now</a>
+        </div>
+    </div>
+</div>
 
-            // Get registered users from local storage
-            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-            
-            // Check if user exists and password matches
-            const user = registeredUsers.find(u => u.username === username && u.password === password);
+<script>
+    function handleLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('loginError');
 
-            if (user) {
-                // Successful login
-                localStorage.setItem('memberLoggedIn', 'true');
-                localStorage.setItem('currentUser', JSON.stringify({
-                    username: user.username,
-                    fullname: user.fullname,
-                    email: user.email,
-                    lastLogin: new Date().toISOString()
-                }));
-                window.location.href = 'index.jsp';
-            } else {
-                // Failed login
-                errorDiv.textContent = "Invalid username or password. Please try again.";
-                errorDiv.classList.add('show');
-            }
-            return false;
+        // Get registered users from local storage
+        const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+        // Check if user exists and password matches
+        const user = registeredUsers.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            // Successful login
+            localStorage.setItem('memberLoggedIn', 'true');
+            const userCopy = { ...user, lastLogin: new Date().toISOString() };
+            localStorage.setItem('currentUser', JSON.stringify(userCopy));
+            window.location.href = 'index.jsp';
+        } else {
+            // Failed login
+            errorDiv.textContent = "Invalid username or password. Please try again.";
+            errorDiv.classList.add('show');
         }
+        return false;
+    }
 
-        // Check if coming from successful signup
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('signup') === 'success') {
-            const username = localStorage.getItem('lastSignupUsername');
-            if (username) {
-                document.getElementById('username').value = username;
-            }
+    // Check if coming from successful signup
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('signup') === 'success') {
+        const username = localStorage.getItem('lastSignupUsername');
+        if (username) {
+            document.getElementById('username').value = username;
         }
+    }
 
-        // Check if user was previously logged in
-        window.addEventListener('load', function() {
-            const lastUsername = JSON.parse(localStorage.getItem('currentUser'))?.username;
-            if (lastUsername) {
-                document.getElementById('username').value = lastUsername;
-            }
-        });
-    </script>
+    // Check if user was previously logged in
+    window.addEventListener('load', function() {
+        const lastUsername = JSON.parse(localStorage.getItem('currentUser'))?.username;
+        if (lastUsername) {
+            document.getElementById('username').value = lastUsername;
+        }
+    });
+</script>
 </body>
-</html> 
+</html>
