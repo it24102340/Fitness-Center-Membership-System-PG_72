@@ -1,0 +1,3 @@
+BASIC,Basic Plan,Access to gym equipment and basic facilities,29.99,1,Basic equipment access;Locker room access;Group classes,true
+PREMIUM,Premium Plan,Full access to all facilities including pool and spa,49.99,1,All Basic features;Pool access;Spa access;Personal trainer consultation,true
+ELITE,Elite Plan,Complete access with premium services,79.99,1,All Premium features;Private training sessions;Nutrition consultation;Priority booking,true

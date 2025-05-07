@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: thine
+Build-Jdk: Oracle OpenJDK version 22
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor-Id: com.fitness
+Main-Class: ${start-class}
+
