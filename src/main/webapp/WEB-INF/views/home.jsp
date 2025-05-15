@@ -164,7 +164,7 @@
                         <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/membership-plans">Membership Plans</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/membership/status-lookup">Check Membership Status</a>
+                        <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/membership/status">Check Membership Status</a>
                     </li>
                 </ul>
             </div>
@@ -179,7 +179,7 @@
                 <a href="${pageContext.request.contextPath}/membership-plans" class="btn btn-lg btn-primary px-4 py-2 shadow-sm d-flex align-items-center gap-2">
                     <i class="fas fa-dumbbell"></i> View Membership Plans
                 </a>
-                <a href="${pageContext.request.contextPath}/membership/status-lookup" class="btn btn-lg btn-info px-4 py-2 shadow-sm d-flex align-items-center gap-2 text-white">
+                <a href="${pageContext.request.contextPath}/membership/status" class="btn btn-lg btn-info px-4 py-2 shadow-sm d-flex align-items-center gap-2 text-white">
                     <i class="fas fa-user-check"></i> Check Membership Status
                 </a>
             </div>

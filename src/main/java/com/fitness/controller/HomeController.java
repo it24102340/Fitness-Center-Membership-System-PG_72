@@ -1,13 +1,18 @@
 package com.fitness.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@Controller
-public class HomeController {
-
-    @GetMapping({"/", "/home"})
-    public String home() {
-        return "home";
+@WebServlet(urlPatterns = {"/", "/home"})
+public class HomeController extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
     }
 } 

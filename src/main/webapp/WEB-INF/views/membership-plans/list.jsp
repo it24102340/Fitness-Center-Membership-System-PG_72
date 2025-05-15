@@ -315,7 +315,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/membership/status-lookup">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/membership/status">
                             <i class="fas fa-id-card me-2"></i>Check Status
                         </a>
                     </li>

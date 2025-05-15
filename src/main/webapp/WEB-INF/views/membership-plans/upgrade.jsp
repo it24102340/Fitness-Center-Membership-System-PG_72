@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${empty member}">
+  <div style="color:red;">DEBUG: member is empty</div>
+</c:if>
+<c:if test="${empty availablePlans}">
+  <div style="color:red;">DEBUG: availablePlans is empty</div>
+</c:if>
 <html>
 <head>
     <title>Upgrade Membership - Fitness Center</title>
@@ -98,6 +104,12 @@
                         <h3 class="card-title"><i class="fas fa-exchange-alt me-2"></i>Upgrade/Change Membership Plan</h3>
                     </div>
                     <div class="card-body">
+                        <c:if test="${empty member}">
+                            <div style="color:red;">DEBUG: member is empty</div>
+                        </c:if>
+                        <c:if test="${empty availablePlans}">
+                            <div style="color:red;">DEBUG: availablePlans is empty</div>
+                        </c:if>
                         <c:choose>
                             <c:when test="${empty member || empty availablePlans}">
                                 <div class="alert alert-danger text-center">Required data is missing. Please check your membership status again.</div>
@@ -117,7 +129,7 @@
                                             </c:otherwise>
                                           </c:choose>
                                         </span></li>
-                                        <li><strong>End Date:</strong> <span class="text-danger"><c:out value="${member.endDate}"/></span></li>
+                                        <li><strong>End Date:</strong> <span class="text-danger"><c:out value="${member.expiryDate}"/></span></li>
                                     </ul>
                                 </div>
                                 <form action="<c:url value='/membership/upgrade/${member.id}'/>" method="post" id="upgradeForm">

@@ -88,7 +88,7 @@
                         <h3><i class="fas fa-search me-2"></i>Membership Status Lookup</h3>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="${pageContext.request.contextPath}/membership/status-lookup">
+                        <form method="post" action="${pageContext.request.contextPath}/membership/status">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" required>

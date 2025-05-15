@@ -7,9 +7,7 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class MembershipPlanService {
     private static final String PLAN_FILE = "src/main/webapp/WEB-INF/data/plans.csv";
 

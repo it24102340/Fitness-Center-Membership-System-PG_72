@@ -1,9 +1,6 @@
 package com.fitness.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
@@ -19,21 +16,15 @@ public class MembershipPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "Plan name is required")
     @Column(nullable = false)
     private String name;
     
-    @NotBlank(message = "Plan description is required")
     @Column(nullable = false, length = 1000)
     private String description;
     
-    @NotNull(message = "Plan price is required")
-    @Positive(message = "Plan price must be positive")
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
     
-    @NotNull(message = "Duration is required")
-    @Positive(message = "Duration must be positive")
     @Column(nullable = false)
     private Integer durationInMonths;
     
