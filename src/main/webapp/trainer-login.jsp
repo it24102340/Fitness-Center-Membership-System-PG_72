@@ -214,43 +214,12 @@
         <div class="login-container">
             <h2 class="login-title">Trainer Login</h2>
             <div id="loginError" class="error-message"></div>
-            <form id="trainerLoginForm" onsubmit="return trainerLogin(event)">
-                <input type="text" id="username" class="input-field" placeholder="Username" required>
-                <input type="password" id="password" class="input-field" placeholder="Password" required>
+            <form action="${pageContext.request.contextPath}/auth/trainer-login" method="post">
+                <input type="text" id="username" name="username" class="input-field" placeholder="Username" required>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Password" required>
                 <button type="submit" class="login-button">Login</button>
             </form>
         </div>
     </div>
-
-    <script>
-        function trainerLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const loginError = document.getElementById('loginError');
-
-            // Trainer credentials
-            const validCredentials = {
-                'GYMTR1': 'image.pngtrainer123'
-            };
-
-            if (username && password) {
-                if (validCredentials[username] === password) {
-                    // Store trainer login status
-                    localStorage.setItem('trainerLoggedIn', 'true');
-                    localStorage.setItem('trainerUsername', username);
-                    // Redirect to trainer dashboard or home page
-                    window.location.href = 'index.jsp';
-                } else {
-                    loginError.textContent = "Invalid username or password. Please try again.";
-                    loginError.classList.add('show');
-                }
-            } else {
-                loginError.textContent = "Please enter both username and password.";
-                loginError.classList.add('show');
-            }
-            return false;
-        }
-    </script>
 </body>
 </html> 

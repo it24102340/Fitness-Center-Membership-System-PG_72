@@ -25,22 +25,16 @@ public class HomeServlet extends HttpServlet {
         } else if ("/home-after-login".equals(path)) {
             if (user == null) {
                 response.sendRedirect(request.getContextPath() + "/login");
-            } else {
-                // Redirect to role-specific dashboard
-                switch (user.getRole()) {
-                    case "ADMIN":
-                        response.sendRedirect(request.getContextPath() + "/admin-dashboard");
-                        break;
-                    case "MEMBER":
-                        response.sendRedirect(request.getContextPath() + "/member-dashboard");
-                        break;
-                    case "TRAINER":
-                        response.sendRedirect(request.getContextPath() + "/trainer-dashboard");
-                        break;
-                    default:
-                        response.sendRedirect(request.getContextPath() + "/login");
-                }
+
+
+
+
             }
+
+
+
+
+
         } else if ("/admin-dashboard".equals(path)) {
             if (user == null || !user.getRole().equals("ADMIN")) {
                 response.sendRedirect(request.getContextPath() + "/login");
