@@ -208,7 +208,6 @@
             <a href="index.jsp" class="nav-link">
                 <span class="back-arrow">←</span> BACK TO HOME
             </a>
-            <a href="fitness-center/membership-plans.html" class="nav-link">PROGRAMS</a>
         </div>
     </div>
 </nav>
@@ -244,31 +243,13 @@
         if (user) {
             // Successful login
             localStorage.setItem('memberLoggedIn', 'true');
-            const userCopy = { ...user, lastLogin: new Date().toISOString() };
-            localStorage.setItem('currentUser', JSON.stringify(userCopy));
-            
-            // Save to file using fetch
-            fetch('save-user-data.jsp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userCopy)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = 'index.jsp';
-                } else {
-                    errorDiv.textContent = "Error saving login data. Please try again.";
-                    errorDiv.classList.add('show');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorDiv.textContent = "Error saving login data. Please try again.";
-                errorDiv.classList.add('show');
-            });
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: user.username,
+                fullname: user.fullname,
+                email: user.email,
+                lastLogin: new Date().toISOString()
+            }));
+            window.location.href = 'index.jsp';
         } else {
             // Failed login
             errorDiv.textContent = "Invalid username or password. Please try again.";
