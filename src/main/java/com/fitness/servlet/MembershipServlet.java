@@ -22,7 +22,8 @@ public class MembershipServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         // Use a persistent location for members.csv
-        String memberFilePath = getServletContext().getRealPath("/WEB-INF/data/members.csv");
+        String memberFilePath = "E:/React/Test/fitness_test/src/main/webapp/WEB-INF/data/members.csv";
+        System.out.println("[DEBUG] Using member file: " + memberFilePath);
         membershipPlanService = new MembershipPlanService();
         membershipService = new MembershipService(memberFilePath);
         membershipService.setMembershipPlanService(membershipPlanService);
