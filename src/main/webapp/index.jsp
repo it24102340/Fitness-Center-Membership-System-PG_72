@@ -1468,7 +1468,8 @@
                                 <a href="#" class="nav-link">HOME</a>
                                 <a href="#about" class="nav-link">ABOUT</a>
                                 <a href="#features" class="nav-link">FEATURES</a>
-                                <a href="fitness-center/membership-plans.html" class="nav-link">PROGRAMS</a>
+
+                                <a href="#programs" class="nav-link">PROGRAMS</a>
                                 <a href="#contact" class="nav-link">CONTACT</a>
                                 <!-- Courses button (hidden by default) -->
                                 <div id="coursesButton" class="hidden">

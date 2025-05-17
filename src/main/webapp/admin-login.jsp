@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Login - Fitness Center</title>
+    <title>Admin Login - ZACSON</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -11,8 +11,8 @@
             min-height: 100vh;
             background: #000000;
             color: #ffffff;
-            overflow-x: hidden;
             font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -116,7 +116,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .login-title {
+        .form-title {
             font-size: 1.5rem;
             font-weight: bold;
             text-align: center;
@@ -126,7 +126,7 @@
             letter-spacing: 2px;
         }
 
-        .input-field {
+        .form-input {
             width: 100%;
             padding: 0.75rem;
             margin-bottom: 1rem;
@@ -137,7 +137,7 @@
             transition: all 0.3s ease;
         }
 
-        .input-field:focus {
+        .form-input:focus {
             outline: none;
             border-color: #ff0000;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
@@ -212,43 +212,30 @@
 
         <!-- Login Form -->
         <div class="login-container">
-            <h2 class="login-title">Admin Login</h2>
-            <div id="loginError" class="error-message"></div>
-            <form id="adminLoginForm" onsubmit="return adminLogin(event)">
-                <input type="text" id="username" class="input-field" placeholder="Username" required>
-                <input type="password" id="password" class="input-field" placeholder="Password" required>
+            <h2 class="form-title">Admin Login</h2>
+            <div id="loginError" class="error-message">Invalid admin credentials.</div>
+            <form id="loginForm" onsubmit="return handleAdminLogin(event)">
+                <input type="text" id="username" name="username" placeholder="Admin Username" class="form-input" required>
+                <input type="password" id="password" name="password" placeholder="Admin Password" class="form-input" required>
                 <button type="submit" class="login-button">Login</button>
             </form>
         </div>
     </div>
 
     <script>
-        function adminLogin(event) {
+        function handleAdminLogin(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const loginError = document.getElementById('loginError');
+            const errorDiv = document.getElementById('loginError');
 
             // Admin credentials
-            const validCredentials = {
-                'Admin1': '232820Ns$',
-                'Admin2': '232820Ns$#'
-            };
-
-            if (username && password) {
-                if (validCredentials[username] === password) {
-                    // Store admin login status
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    localStorage.setItem('adminUsername', username);
-                    // Redirect to admin dashboard or home page
-                    window.location.href = 'index.jsp';
-                } else {
-                    loginError.textContent = "Invalid username or password. Please try again.";
-                    loginError.classList.add('show');
-                }
+            if (username === 'Admin1' && password === '232820Ns$') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'admin-dashboard';
             } else {
-                loginError.textContent = "Please enter both username and password.";
-                loginError.classList.add('show');
+                errorDiv.textContent = "Invalid admin credentials.";
+                errorDiv.classList.add('show');
             }
             return false;
         }
