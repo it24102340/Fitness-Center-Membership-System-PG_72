@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class MemberRepository {
     private final String filePath;
-    private static final String CSV_HEADER = "id,firstName,lastName,email,phone,dateOfBirth,address,plan,joinDate,expiryDate,status";
+    private static final String CSV_HEADER = "id,firstName,lastName,email,phone,dateOfBirth,address,planId,joinDate,expiryDate,status";
     private MembershipPlanService membershipPlanService;
 
     public MemberRepository(String filePath) {
@@ -61,11 +61,13 @@ public class MemberRepository {
                     member.setDateOfBirth(LocalDate.parse(data[5]));
                     member.setAddress(data[6]);
                     if (membershipPlanService != null && data[7] != null && !data[7].isEmpty()) {
-                        MembershipPlan plan = membershipPlanService.getAllPlans().stream()
-                            .filter(p -> p.getName().equals(data[7]))
-                            .findFirst()
-                            .orElse(null);
-                        member.setCurrentPlan(plan);
+                        try {
+                            Long planId = Long.parseLong(data[7]);
+                            MembershipPlan plan = membershipPlanService.getPlanById(planId);
+                            member.setCurrentPlan(plan);
+                        } catch (NumberFormatException e) {
+                            member.setCurrentPlan(null);
+                        }
                     }
                     member.setJoinDate(LocalDate.parse(data[8]));
                     member.setExpiryDate(LocalDate.parse(data[9]));
@@ -132,7 +134,7 @@ public class MemberRepository {
                     m.getPhone(),
                     m.getDateOfBirth() != null ? m.getDateOfBirth().toString() : "",
                     m.getAddress(),
-                    m.getCurrentPlan() != null ? m.getCurrentPlan().getName() : "",
+                    m.getCurrentPlan() != null && m.getCurrentPlan().getId() != null ? m.getCurrentPlan().getId().toString() : "",
                     m.getJoinDate() != null ? m.getJoinDate().toString() : "",
                     m.getExpiryDate() != null ? m.getExpiryDate().toString() : "",
                     m.getStatus()
@@ -160,7 +162,7 @@ public class MemberRepository {
                     m.getPhone(),
                     m.getDateOfBirth() != null ? m.getDateOfBirth().toString() : "",
                     m.getAddress(),
-                    m.getCurrentPlan() != null ? m.getCurrentPlan().getName() : "",
+                    m.getCurrentPlan() != null && m.getCurrentPlan().getId() != null ? m.getCurrentPlan().getId().toString() : "",
                     m.getJoinDate() != null ? m.getJoinDate().toString() : "",
                     m.getExpiryDate() != null ? m.getExpiryDate().toString() : "",
                     m.getStatus()

@@ -121,7 +121,7 @@
                                     </ul>
                                 </div>
                                 <form action="${pageContext.request.contextPath}/membership/upgrade" method="post" id="upgradeForm">
-                                    <input type="hidden" name="email" value="${member.email}" />
+                                    <input type="hidden" name="memberId" value="${member.id}" />
                                     <div class="mb-4">
                                         <h4>Select New Plan</h4>
                                         <div class="row">

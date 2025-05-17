@@ -74,12 +74,11 @@
               <input type="hidden" name="memberId" value="${member.id}">
               <button class="btn btn-success w-100" type="submit">Upgrade Plan</button>
             </form>
-            <form action="${pageContext.request.contextPath}/membership/cancel" method="post" style="flex:1;">
-              <input type="hidden" name="memberId" value="${member.id}">
+            <form action="${pageContext.request.contextPath}/membership/cancel/${member.id}" method="post" style="flex:1;">
               <button class="btn btn-danger w-100" type="submit">Cancel Membership</button>
-                            </form>
-                    </div>
-          <a href="${pageContext.request.contextPath}/membership/plans" class="btn btn-secondary w-100">Back to Plans</a>
+            </form>
+          </div>
+          <a href="${pageContext.request.contextPath}/membership-plans" class="btn btn-secondary w-100">Back to Plans</a>
         </c:if>
       </div>
     </div>

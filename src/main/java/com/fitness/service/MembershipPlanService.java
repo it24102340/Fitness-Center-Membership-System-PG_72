@@ -17,7 +17,7 @@ public class MembershipPlanService {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length >= 6) {
+                if (parts.length >= 7) {
                     MembershipPlan plan = new MembershipPlan();
                     plan.setId(Long.parseLong(parts[0]));
                     plan.setName(parts[1]);
@@ -25,11 +25,28 @@ public class MembershipPlanService {
                     plan.setPrice(new java.math.BigDecimal(parts[3]));
                     plan.setDurationInMonths(Integer.parseInt(parts[4]));
                     plan.setPlanType(parts[5]);
+                    plan.setFeatures(parts[6]);
                     plans.add(plan);
                 }
             }
         } catch (IOException e) {
             // File may not exist yet
+        }
+        // Always ensure hardcoded plans are present
+        List<MembershipPlan> hardcoded = new ArrayList<>();
+        MembershipPlan basic = new MembershipPlan("Basic", "Access to gym equipment, Basic fitness assessment, Group classes (limited)", new java.math.BigDecimal("29.99"), 1, "BASIC");
+        basic.setId(1L);
+        MembershipPlan premium = new MembershipPlan("Premium", "All Basic features, Personal trainer sessions, Unlimited group classes, Nutrition consultation", new java.math.BigDecimal("49.99"), 3, "PREMIUM");
+        premium.setId(2L);
+        MembershipPlan elite = new MembershipPlan("Elite", "All Premium features, VIP lounge access, Spa & sauna access, Priority booking", new java.math.BigDecimal("79.99"), 12, "ELITE");
+        elite.setId(3L);
+        hardcoded.add(basic);
+        hardcoded.add(premium);
+        hardcoded.add(elite);
+        for (MembershipPlan hc : hardcoded) {
+            if (plans.stream().noneMatch(p -> p.getId().equals(hc.getId()))) {
+                plans.add(hc);
+            }
         }
         return plans;
     }
@@ -69,7 +86,8 @@ public class MembershipPlanService {
                     plan.getDescription(),
                     plan.getPrice().toString(),
                     plan.getDurationInMonths().toString(),
-                    plan.getPlanType()
+                    plan.getPlanType(),
+                    plan.getFeatures()
                 ));
                 writer.newLine();
             }

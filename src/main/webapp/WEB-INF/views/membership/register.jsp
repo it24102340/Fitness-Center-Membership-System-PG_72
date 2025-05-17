@@ -45,7 +45,7 @@
           <input type="text" id="phone" name="phone" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-success w-100" style="margin-top:8px;">Register</button>
-        <a href="${pageContext.request.contextPath}/membership/plans" class="btn btn-secondary w-100 mt-2">Back to Plans</a>
+        <a href="${pageContext.request.contextPath}/membership-plans" class="btn btn-secondary w-100 mt-2">Back to Plans</a>
       </form>
     </div>
   </div>

@@ -22,7 +22,7 @@ public class MembershipServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         // Use a persistent location for members.csv
-        String memberFilePath = System.getProperty("user.home") + "/fitness-center-data/members.csv";
+        String memberFilePath = getServletContext().getRealPath("/WEB-INF/data/members.csv");
         membershipPlanService = new MembershipPlanService();
         membershipService = new MembershipService(memberFilePath);
         membershipService.setMembershipPlanService(membershipPlanService);
@@ -47,6 +47,13 @@ public class MembershipServlet extends HttpServlet {
                     Member member = memberOpt.get();
                     request.setAttribute("member", member);
                     request.setAttribute("status", member.getStatus());
+                    System.out.println("[DEBUG] Member: " + member.getEmail() + ", PlanId: " + (member.getCurrentPlan() != null ? member.getCurrentPlan().getId() : "null"));
+                    MembershipPlan plan = null;
+                    if (member.getCurrentPlan() != null && member.getCurrentPlan().getId() != null) {
+                        plan = membershipPlanService.getPlanById(member.getCurrentPlan().getId());
+                    }
+                    System.out.println("[DEBUG] Looked up plan: " + (plan != null ? plan.getName() : "null"));
+                    request.setAttribute("currentPlan", plan);
                 } else {
                     request.setAttribute("error", "No member found with that email");
                 }
@@ -58,10 +65,17 @@ public class MembershipServlet extends HttpServlet {
         if (path.equals("/upgrade")) {
             String memberIdStr = request.getParameter("memberId");
             List<MembershipPlan> allPlans = membershipPlanService.getAllPlans();
+            System.out.println("Loaded plans:");
+            for (MembershipPlan p : allPlans) {
+                System.out.println("ID: " + p.getId() + ", Name: " + p.getName());
+            }
             request.setAttribute("plans", allPlans); // Always set plans
             if (memberIdStr != null) {
                 Long memberId = Long.parseLong(memberIdStr);
                 System.out.println("[DEBUG] Upgrade page: Looking up member with ID: " + memberId);
+                for (Member m : membershipService.getAllMembers()) {
+                    System.out.println("ID: " + m.getId() + ", Email: " + m.getEmail());
+                }
                 Optional<Member> memberOpt = membershipService.getAllMembers().stream()
                     .filter(m -> m.getId() != null && m.getId().equals(memberId))
                     .findFirst();
@@ -134,10 +148,13 @@ public class MembershipServlet extends HttpServlet {
         }
         
         if (path.equals("/upgrade")) {
-            String email = request.getParameter("email");
+            String memberIdStr = request.getParameter("memberId");
             String planIdStr = request.getParameter("planId");
-            if (email != null && planIdStr != null) {
-                Optional<Member> memberOpt = membershipService.getMemberByEmail(email);
+            if (memberIdStr != null && planIdStr != null) {
+                Long memberId = Long.parseLong(memberIdStr);
+                Optional<Member> memberOpt = membershipService.getAllMembers().stream()
+                    .filter(m -> m.getId() != null && m.getId().equals(memberId))
+                    .findFirst();
                 MembershipPlan newPlan = membershipPlanService.getPlanById(Long.parseLong(planIdStr));
                 if (memberOpt.isPresent() && newPlan != null) {
                     Member member = memberOpt.get();
@@ -160,7 +177,6 @@ public class MembershipServlet extends HttpServlet {
                 request.setAttribute("error", "Please select a plan to upgrade.");
             }
             // If error, reload the upgrade page with error message
-            String memberIdStr = request.getParameter("memberId");
             if (memberIdStr != null) {
                 Long memberId = Long.parseLong(memberIdStr);
                 Optional<Member> memberOpt = membershipService.getAllMembers().stream()
