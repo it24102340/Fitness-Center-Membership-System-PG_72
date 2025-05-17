@@ -37,6 +37,7 @@ public class MembershipService {
             member.setExpiryDate(LocalDate.now().plusMonths(plan.getDurationInMonths()));
         }
         
+        System.out.println("[DEBUG] Registering member: " + firstName + " " + lastName + ", Email: " + email + ", Plan: " + (plan != null ? plan.getName() : "None"));
         memberRepository.save(member);
         return member;
     }

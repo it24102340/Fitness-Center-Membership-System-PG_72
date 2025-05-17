@@ -16,6 +16,7 @@ public class MemberRepository {
 
     public MemberRepository(String filePath) {
         this.filePath = filePath;
+        System.out.println("MemberRepository using file: " + new File(filePath).getAbsolutePath());
         createFileIfNotExists();
     }
 
@@ -27,11 +28,13 @@ public class MemberRepository {
         File file = new File(filePath);
         if (!file.exists()) {
             try {
-                file.getParentFile().mkdirs();
+                if (file.getParentFile() != null) file.getParentFile().mkdirs();
                 try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
                     writer.println(CSV_HEADER);
                 }
             } catch (IOException e) {
+                System.err.println("Failed to create members.csv at " + file.getAbsolutePath());
+                e.printStackTrace();
                 throw new RuntimeException("Failed to create members.csv", e);
             }
         }
@@ -71,14 +74,28 @@ public class MemberRepository {
                 }
             }
         } catch (IOException e) {
+            System.err.println("Failed to read members.csv at " + new File(filePath).getAbsolutePath());
+            e.printStackTrace();
             throw new RuntimeException("Failed to read members.csv", e);
+        }
+        System.out.println("[DEBUG] Loaded " + members.size() + " members from " + new File(filePath).getAbsolutePath());
+        for (Member m : members) {
+            System.out.println("[DEBUG] Member: ID=" + m.getId() + ", Email=" + m.getEmail() + ", Plan=" + (m.getCurrentPlan() != null ? m.getCurrentPlan().getName() : "None"));
         }
         return members;
     }
 
     public Optional<Member> findByEmail(String email) {
+        System.out.println("[DEBUG] Looking up member by email: " + email);
         return findAll().stream()
                 .filter(member -> member.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+    }
+
+    public Optional<Member> findById(Long id) {
+        System.out.println("[DEBUG] Looking up member by ID: " + id);
+        return findAll().stream()
+                .filter(member -> member.getId() != null && member.getId().equals(id))
                 .findFirst();
     }
 
@@ -122,6 +139,8 @@ public class MemberRepository {
                 ));
             }
         } catch (IOException e) {
+            System.err.println("Failed to save member to file at " + new File(filePath).getAbsolutePath());
+            e.printStackTrace();
             throw new RuntimeException("Failed to save member to file", e);
         }
     }

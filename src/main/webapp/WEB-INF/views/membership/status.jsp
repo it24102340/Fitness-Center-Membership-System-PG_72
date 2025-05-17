@@ -40,11 +40,20 @@
             <div><b>Phone:</b> ${member.phone}</div>
             <hr>
             <h6 class="mb-2" style="font-weight:600;">Membership Details</h6>
-            <div><b>Current Plan:</b> ${currentPlan.name}</div>
+            <div><b>Current Plan:</b> 
+              <c:choose>
+                <c:when test="${not empty currentPlan}">
+                  ${currentPlan.name}
+                </c:when>
+                <c:otherwise>
+                  None
+                </c:otherwise>
+              </c:choose>
+                </div>
             <div><b>Join Date:</b> ${member.joinDate}</div>
             <div><b>Expiry Date:</b> ${member.expiryDate}</div>
             <div><b>Status:</b> 
-              <c:choose>
+                            <c:choose>
                 <c:when test="${member.status eq 'ACTIVE'}">
                   <span class="badge bg-success" style="font-size:1em;">ACTIVE</span>
                 </c:when>
@@ -53,13 +62,13 @@
                 </c:when>
                 <c:when test="${member.status eq 'CANCELLED'}">
                   <span class="badge bg-danger" style="font-size:1em;">CANCELLED</span>
-                </c:when>
-                <c:otherwise>
+                                </c:when>
+                                <c:otherwise>
                   <span class="badge bg-secondary" style="font-size:1em;">${member.status}</span>
-                </c:otherwise>
-              </c:choose>
-            </div>
-          </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
           <div class="d-flex gap-2 mt-4 mb-2">
             <form action="${pageContext.request.contextPath}/membership/upgrade" method="get" style="flex:1;">
               <input type="hidden" name="memberId" value="${member.id}">
@@ -68,13 +77,13 @@
             <form action="${pageContext.request.contextPath}/membership/cancel" method="post" style="flex:1;">
               <input type="hidden" name="memberId" value="${member.id}">
               <button class="btn btn-danger w-100" type="submit">Cancel Membership</button>
-            </form>
-          </div>
+                            </form>
+                    </div>
           <a href="${pageContext.request.contextPath}/membership/plans" class="btn btn-secondary w-100">Back to Plans</a>
         </c:if>
       </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

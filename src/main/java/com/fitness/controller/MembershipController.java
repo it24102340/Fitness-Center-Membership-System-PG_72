@@ -16,15 +16,17 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/membership/register"})
 public class MembershipController extends HttpServlet {
-    
+
     private MembershipService membershipService;
     private MembershipPlanService membershipPlanService;
-    
+
     @Override
     public void init() throws ServletException {
-        String memberFilePath = "src/main/webapp/WEB-INF/data/members.csv";
-        membershipService = new MembershipService(memberFilePath);
+        // Use a persistent location for members.csv
+        String memberFilePath = System.getProperty("user.home") + "/fitness-center-data/members.csv";
         membershipPlanService = new MembershipPlanService();
+        membershipService = new MembershipService(memberFilePath);
+        membershipService.setMembershipPlanService(membershipPlanService);
     }
     
     private List<MembershipPlan> getHardcodedPlans() {
@@ -92,23 +94,23 @@ public class MembershipController extends HttpServlet {
                 return;
             }
             
-            // Split name into first and last name
-            String[] names = name.trim().split(" ", 2);
-            String firstName = names[0];
-            String lastName = names.length > 1 ? names[1] : "";
+        // Split name into first and last name
+        String[] names = name.trim().split(" ", 2);
+        String firstName = names[0];
+        String lastName = names.length > 1 ? names[1] : "";
             
-            // Use a valid placeholder address
-            String address = "123 Main St";
+        // Use a valid placeholder address
+        String address = "123 Main St";
             
-            membershipService.subscribe(
-                firstName,
-                lastName,
-                email,
-                phone,
+        membershipService.subscribe(
+            firstName,
+            lastName,
+            email,
+            phone,
                 LocalDate.of(2000, 1, 1), // Placeholder DOB
-                address,
-                plan
-            );
+            address,
+            plan
+        );
             
             response.sendRedirect(request.getContextPath() + "/membership/status?email=" + email);
         } catch (NumberFormatException e) {
