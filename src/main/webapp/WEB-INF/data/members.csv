@@ -1,9 +1,2 @@
-id,firstName,lastName,email,phone,dateOfBirth,address,planId,joinDate,expiryDate,status
-2,Thineth,,slsupernova2004@gmail.com,+94712345678,2000-01-01,123 Main St,,2025-05-06,2026-05-06,CANCELLED
-3,Bashitha,,seahawksuper@gmail.com,+94717955908,2000-01-01,123 Main St,,2025-05-06,2025-11-06,ACTIVE
-4,Bashitha,,seahawksuper@gmail.com,+94717955908,2000-01-01,123 Main St,,2025-05-06,2026-05-06,ACTIVE
-5,Kavindu,,sanigdhabashitha@gmail.com,+94712345678,2000-01-01,123 Main St,,2025-05-06,2025-06-06,ACTIVE
-6,Sunil,,athukoralabashitha@gmail.com,+94717955908,2000-01-01,123 Main St,,2025-05-07,2026-05-07,ACTIVE
-7,Athukorala,,seahawksupernova@gmail.com,+94712345678,2000-01-01,123 Main St,,2025-05-06,2026-05-06,ACTIVE
-8,Dilum,,sanigdhabashitha@gmai.com,+94712345678,2000-01-01,123 Main St,,2025-05-07,2027-05-07,ACTIVE
-9,Adeesha,,Adeesha123@gmail.com,+9412345678,2000-01-01,123 Main St,3,2025-05-17,2026-05-17,ACTIVE
+id,firstName,lastName,email,phone,dateOfBirth,address,planId,planType,joinDate,expiryDate,status
+1,Ravindu,,ravindukaweesha@gmail.com,+9442345678,2000-01-01,123 Main St,3,ELITE,2025-05-18,2026-05-18,ACTIVE

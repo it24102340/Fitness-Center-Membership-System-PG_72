@@ -1,48 +1,24 @@
 package com.fitness.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "membership_plans")
-@Data
-@NoArgsConstructor
 public class MembershipPlan {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
     private String name;
-    
-    @Column(nullable = false, length = 1000)
     private String description;
-    
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
-    
-    @Column(nullable = false)
     private Integer durationInMonths;
-    
-    @Column(nullable = false)
     private boolean active = true;
-    
-    @OneToMany(mappedBy = "currentPlan")
     private List<Member> members = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "plan")
     private List<MembershipHistory> membershipHistory = new ArrayList<>();
-    
-    @Column(nullable = false)
     private String features;
-    
-    @Column(nullable = false)
     private String planType; // BASIC, STANDARD, PREMIUM, etc.
-    
+
+    public MembershipPlan() {
+    }
+
     public MembershipPlan(String name, String description, BigDecimal price, int durationInMonths, String planType) {
         this.name = name;
         this.description = description;
@@ -57,6 +33,88 @@ public class MembershipPlan {
         this.price = price;
         this.durationInMonths = durationInMonths;
         this.active = active;
+        this.planType = planType;
+    }
+
+    // Getters
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Integer getDurationInMonths() {
+        return durationInMonths;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public List<MembershipHistory> getMembershipHistory() {
+        return membershipHistory;
+    }
+
+    public String getFeatures() {
+        return features;
+    }
+
+    public String getPlanType() {
+        return planType;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setDurationInMonths(Integer durationInMonths) {
+        this.durationInMonths = durationInMonths;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
+
+    public void setMembershipHistory(List<MembershipHistory> membershipHistory) {
+        this.membershipHistory = membershipHistory;
+    }
+
+    public void setFeatures(String features) {
+        this.features = features;
+    }
+
+    public void setPlanType(String planType) {
         this.planType = planType;
     }
 } 

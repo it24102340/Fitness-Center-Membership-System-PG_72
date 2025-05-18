@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class MemberRepository {
     private final String filePath;
-    private static final String CSV_HEADER = "id,firstName,lastName,email,phone,dateOfBirth,address,planId,joinDate,expiryDate,status";
+    private static final String CSV_HEADER = "id,firstName,lastName,email,phone,dateOfBirth,address,planId,planType,joinDate,expiryDate,status";
     private MembershipPlanService membershipPlanService;
 
     public MemberRepository(String filePath) {
@@ -50,8 +50,8 @@ public class MemberRepository {
                     isFirstLine = false;
                     continue;
                 }
-                String[] data = line.split(",");
-                if (data.length >= 11) {
+                String[] data = line.split(",", -1);
+                if (data.length >= 12) {
                     Member member = new Member();
                     member.setId(Long.parseLong(data[0]));
                     member.setFirstName(data[1]);
@@ -60,18 +60,35 @@ public class MemberRepository {
                     member.setPhone(data[4]);
                     member.setDateOfBirth(LocalDate.parse(data[5]));
                     member.setAddress(data[6]);
-                    if (membershipPlanService != null && data[7] != null && !data[7].isEmpty()) {
-                        try {
-                            Long planId = Long.parseLong(data[7]);
-                            MembershipPlan plan = membershipPlanService.getPlanById(planId);
-                            member.setCurrentPlan(plan);
-                        } catch (NumberFormatException e) {
-                            member.setCurrentPlan(null);
+                    MembershipPlan plan = null;
+                    if ((data[7] != null && !data[7].isEmpty()) || (data[8] != null && !data[8].isEmpty())) {
+                        plan = new MembershipPlan();
+                        if (data[7] != null && !data[7].isEmpty()) {
+                            try {
+                                plan.setId(Long.parseLong(data[7]));
+                            } catch (NumberFormatException e) {
+                                plan.setId(null);
+                            }
+                        }
+                        if (data[8] != null && !data[8].isEmpty()) {
+                            plan.setPlanType(data[8]);
+                        }
+                        if (membershipPlanService != null && plan.getId() != null) {
+                            MembershipPlan fullPlan = membershipPlanService.getPlanById(plan.getId());
+                            if (fullPlan != null) {
+                                plan.setName(fullPlan.getName());
+                                plan.setDescription(fullPlan.getDescription());
+                                plan.setPrice(fullPlan.getPrice());
+                                plan.setDurationInMonths(fullPlan.getDurationInMonths());
+                                plan.setActive(fullPlan.isActive());
+                                plan.setFeatures(fullPlan.getFeatures());
+                            }
                         }
                     }
-                    member.setJoinDate(LocalDate.parse(data[8]));
-                    member.setExpiryDate(LocalDate.parse(data[9]));
-                    member.setStatus(data[10]);
+                    member.setCurrentPlan(plan);
+                    member.setJoinDate(LocalDate.parse(data[9]));
+                    member.setExpiryDate(LocalDate.parse(data[10]));
+                    member.setStatus(data[11]);
                     members.add(member);
                 }
             }
@@ -82,7 +99,7 @@ public class MemberRepository {
         }
         System.out.println("[DEBUG] Loaded " + members.size() + " members from " + new File(filePath).getAbsolutePath());
         for (Member m : members) {
-            System.out.println("[DEBUG] Member: ID=" + m.getId() + ", Email=" + m.getEmail() + ", Plan=" + (m.getCurrentPlan() != null ? m.getCurrentPlan().getName() : "None"));
+            System.out.println("[DEBUG] Member: ID=" + m.getId() + ", Email=" + m.getEmail() + ", PlanId=" + (m.getCurrentPlan() != null ? m.getCurrentPlan().getId() : "None") + ", PlanType=" + (m.getCurrentPlan() != null ? m.getCurrentPlan().getPlanType() : "None"));
         }
         return members;
     }
@@ -104,7 +121,6 @@ public class MemberRepository {
     public void save(Member member) {
         List<Member> members = findAll();
         boolean exists = false;
-        
         for (int i = 0; i < members.size(); i++) {
             if (members.get(i).getId() != null && members.get(i).getId().equals(member.getId())) {
                 members.set(i, member);
@@ -112,7 +128,6 @@ public class MemberRepository {
                 break;
             }
         }
-        
         if (!exists) {
             // Generate new ID if member is new
             long newId = members.stream()
@@ -122,11 +137,10 @@ public class MemberRepository {
             member.setId(newId);
             members.add(member);
         }
-
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println(CSV_HEADER);
             for (Member m : members) {
-                writer.println(String.join(",", 
+                writer.println(String.join(",",
                     m.getId() != null ? m.getId().toString() : "",
                     m.getFirstName(),
                     m.getLastName(),
@@ -135,6 +149,7 @@ public class MemberRepository {
                     m.getDateOfBirth() != null ? m.getDateOfBirth().toString() : "",
                     m.getAddress(),
                     m.getCurrentPlan() != null && m.getCurrentPlan().getId() != null ? m.getCurrentPlan().getId().toString() : "",
+                    m.getCurrentPlan() != null && m.getCurrentPlan().getPlanType() != null ? m.getCurrentPlan().getPlanType() : "",
                     m.getJoinDate() != null ? m.getJoinDate().toString() : "",
                     m.getExpiryDate() != null ? m.getExpiryDate().toString() : "",
                     m.getStatus()
@@ -150,11 +165,10 @@ public class MemberRepository {
     public void delete(String email) {
         List<Member> members = findAll();
         members.removeIf(member -> member.getEmail().equalsIgnoreCase(email));
-        
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println(CSV_HEADER);
             for (Member m : members) {
-                writer.println(String.join(",", 
+                writer.println(String.join(",",
                     m.getId() != null ? m.getId().toString() : "",
                     m.getFirstName(),
                     m.getLastName(),
@@ -163,6 +177,7 @@ public class MemberRepository {
                     m.getDateOfBirth() != null ? m.getDateOfBirth().toString() : "",
                     m.getAddress(),
                     m.getCurrentPlan() != null && m.getCurrentPlan().getId() != null ? m.getCurrentPlan().getId().toString() : "",
+                    m.getCurrentPlan() != null && m.getCurrentPlan().getPlanType() != null ? m.getCurrentPlan().getPlanType() : "",
                     m.getJoinDate() != null ? m.getJoinDate().toString() : "",
                     m.getExpiryDate() != null ? m.getExpiryDate().toString() : "",
                     m.getStatus()
